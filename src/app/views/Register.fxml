@@ -27,8 +27,8 @@
       <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="132.0" layoutY="133.0" size="15" />
       <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="133.0" layoutY="208.0" size="15" />
       <FontAwesomeIconView fill="WHITE" glyphName="LOCK" layoutX="134.0" layoutY="241.0" size="15" />
-      <MaterialDesignIconView fill="WHITE" glyphName="BACK" layoutX="54.0" layoutY="293.0" size="12" />
-      <MaterialDesignIconView fill="WHITE" layoutX="221.0" layoutY="293.0" size="12" />
+      <MaterialDesignIconView fill="WHITE" glyphName="REFRESH" layoutX="54.0" layoutY="293.0" size="12" />
+      <MaterialDesignIconView fill="WHITE" glyphName="MAIL_RU" layoutX="221.0" layoutY="293.0" size="12" />
       <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="455.0" layoutY="216.0" size="100" />
    </children>
 </AnchorPane>
