@@ -1,5 +1,5 @@
 package app.models;
-import app.interfaces.InterfaceTemplate;
+import app.templates.InterfaceTemplate;
 import app.connection.SqliteConnection;
 import app.middleware.EmployeeMiddleware;
 import javafx.collections.FXCollections;

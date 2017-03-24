@@ -1,7 +1,7 @@
 package app.models;
 
 import app.connection.SqliteConnection;
-import app.interfaces.InterfacesTemplate2;
+import app.templates.InterfacesTemplate2;
 import app.middleware.ReviewMiddleware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

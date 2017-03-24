@@ -1,4 +1,4 @@
-package app.interfaces;
+package app.templates;
 import app.middleware.EmployeeMiddleware;
 import javafx.collections.*;
 import java.sql.SQLException;

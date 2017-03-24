@@ -1,9 +1,7 @@
-package app.interfaces;
+package app.templates;
 
-import app.middleware.EmployeeMiddleware;
 import app.middleware.ReviewMiddleware;
 import javafx.collections.ObservableList;
-
 import java.sql.SQLException;
 
 /**
