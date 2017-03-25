@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.models.*;
-import app.middleware.EmployeeMiddleware;
+import app.middleware.UserMiddleware;
 import com.jfoenix.controls.JFXSnackbar;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -120,9 +120,9 @@ public class LoginController implements Initializable{
                 message = "You have to filled out all form field !";
             }else {
                 /*insert into database while user register*/
-                EmployeeMiddleware tb = new EmployeeMiddleware();
+                UserMiddleware tb = new UserMiddleware();
                 tb.setName(txtNames.getText());
-                tb.setBornDate(bornDate.getValue());
+                tb.setAddress(bornDate.getValue().toString());
                 tb.setUsername(txtUsernames.getText());
                 tb.setPassword(txtPasswords.getText());
 

@@ -14,7 +14,7 @@
    <children>
       <Label layoutX="256.0" layoutY="14.0" text="FoodCom" textFill="WHITE">
          <font>
-            <Font name="Bitstream Vera Sans Bold" size="42.0" />
+            <Font id_user="Bitstream Vera Sans Bold" size="42.0" />
          </font></Label>
       <JFXButton fx:id="btnLogout" layoutX="685.0" layoutY="55.0" onAction="#logout" prefHeight="26.0" prefWidth="69.0" text="Logout" textFill="WHITE" />
       <JFXTextArea fx:id="txtKomentar" layoutX="16.0" layoutY="236.0" prefHeight="178.0" prefWidth="256.0" promptText="Komentar Anda" />

@@ -1,114 +1,196 @@
 package app.models;
-import app.templates.InterfaceTemplate;
+
 import app.connection.SqliteConnection;
-import app.middleware.EmployeeMiddleware;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import java.util.Date;
+import app.middleware.UserMiddleware;
+import javafx.collections.*;
 import java.sql.*;
+
 /**
  * Created by r32427 on 06/03/17.
  */
-public class UserModel implements InterfaceTemplate{
+public class UserModel{
     private  Connection conn;
 
-    @Override
-    public void insert(EmployeeMiddleware u) throws SQLException{
+
+    public boolean loginUser(String username, String password) throws SQLException{
+        conn = SqliteConnection.connector();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "SELECT * FROM User " +
+                "WHERE username = ? AND password = ? LIMIT 1";
+        try {
+            preparedStatement  = conn.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+                return true;
+            else
+                return false;
+        }catch (Exception e){
+            return false;
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
+    }
+
+    public boolean isFoundName(String name) throws SQLException{
+        conn = SqliteConnection.connector();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "SELECT * FROM User WHERE name = ?";
+        try{
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return true;
+            else
+                return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
+    }
+
+    public void insert(UserMiddleware u) throws SQLException{
         conn = SqliteConnection.connector();
         PreparedStatement preparedStatement = null;
         try{
-            String sql = "INSERT INTO Employee(name, born_date, username, password, created_at) VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO User(" +
+                    "name, " +
+                    "address, " +
+                    "phone, " +
+                    "username, " +
+                    "password, " +
+                    "created_at" +
+                ") " +
+                    "VALUES" +
+                "(?,?,?,?,?,?)";
+
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, u.getName());
-            preparedStatement.setString(2, u.getBornDate().toString());
-            preparedStatement.setString(3, u.getUsername());
-            preparedStatement.setString(4, u.getPassword());
-            preparedStatement.setString(5, new Date().toString());
+            preparedStatement.setString(2, u.getAddress());
+            preparedStatement.setString(3, u.getPhone());
+            preparedStatement.setString(4, u.getUsername());
+            preparedStatement.setString(5, u.getPassword());
+            preparedStatement.setString(6, new Timestamp(System.currentTimeMillis()).toString());
+
             preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             preparedStatement.close();
         }
     }
 
-    @Override
-    public void update(EmployeeMiddleware u) throws SQLException{
+    public void update(UserMiddleware u) throws SQLException{
         conn = SqliteConnection.connector();
         PreparedStatement preparedStatement = null;
         try{
-            String sql = "UPDATE Employee SET name=?, born_date=?, username=?, password=? WHERE id=?";
+            String sql = "UPDATE User " +
+                "SET " +
+                    "name=?, " +
+                    "address=?, " +
+                    "phone=?, " +
+                    "username=?, " +
+                    "password=? " +
+                    "created_at=? " +
+                "WHERE id=?";
+
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, u.getName());
-            preparedStatement.setString(2, u.getBornDate().toString());
-            preparedStatement.setString(3, u.getUsername());
-            preparedStatement.setString(4, u.getPassword());
-            preparedStatement.setString(5, u.getId());
+            preparedStatement.setString(2, u.getAddress());
+            preparedStatement.setString(3, u.getPhone());
+            preparedStatement.setString(4, u.getUsername());
+            preparedStatement.setString(5, u.getPassword());
+            preparedStatement.setString(6, new Timestamp(System.currentTimeMillis()).toString());
+            preparedStatement.setString(7, u.getId());
+
             preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             preparedStatement.close();
         }
     }
 
-    @Override
-    public void delete(EmployeeMiddleware u) throws SQLException{
+    public void delete(UserMiddleware u) throws SQLException{
         conn = SqliteConnection.connector();
         PreparedStatement preparedStatement = null;
         try{
-            String sql = "DELETE FROM Employee WHERE id=?";
+            String sql = "DELETE FROM User WHERE id=?";
+
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, u.getId());
+
             preparedStatement.execute();
         }catch (SQLException e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             preparedStatement.close();
         }
     }
 
-    @Override
     public ObservableList getAll(){
         conn = SqliteConnection.connector();
         ObservableList observableList = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT * FROM Employee";
+            String sql = "SELECT * FROM User";
             ResultSet resultSet = conn.createStatement().executeQuery(sql);
+
             while (resultSet.next()){
-                EmployeeMiddleware tb = new EmployeeMiddleware();
+                UserMiddleware tb = new UserMiddleware();
+
                 tb.setId(resultSet.getString(1));
                 tb.setName(resultSet.getString(2));
-                tb.setBornDate(resultSet.getString(3));
-                tb.setUsername(resultSet.getString(4));
-                tb.setPassword(resultSet.getString(5));
+                tb.setAddress(resultSet.getString(3));
+                tb.setPhone(resultSet.getString(4));
+                tb.setUsername(resultSet.getString(5));
+                tb.setPassword(resultSet.getString(6));
+
                 observableList.add(tb);
             }
+
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return observableList;
     }
 
-    @Override
     public ObservableList getByName(String name) {
         conn = SqliteConnection.connector();
         ObservableList observableList = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT * FROM Employee WHERE name like"+"'%"+name+"%'"+"";
+            String sql = "SELECT * FROM User " +
+                    "WHERE name like"+"'%"+name+"%'"+"";
+
             ResultSet resultSet = conn.createStatement().executeQuery(sql);
+
             while (resultSet.next()){
-                EmployeeMiddleware tb = new EmployeeMiddleware();
+                UserMiddleware tb = new UserMiddleware();
+
                 tb.setId(resultSet.getString(1));
                 tb.setName(resultSet.getString(2));
-                tb.setBornDate(resultSet.getDate(3));
-                tb.setUsername(resultSet.getString(4));
-                tb.setPassword(resultSet.getString(5));
+                tb.setAddress(resultSet.getString(3));
+                tb.setPhone(resultSet.getString(4));
+                tb.setUsername(resultSet.getString(5));
+                tb.setPassword(resultSet.getString(6));
+
                 observableList.add(tb);
             }
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return observableList;
     }

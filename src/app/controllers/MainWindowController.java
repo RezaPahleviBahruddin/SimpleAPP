@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.middleware.ReviewMiddleware;
-import app.models.ReviewModel;
+import app.middleware.AdminMiddleware;
+import app.models.AdminModel;
 import com.jfoenix.controls.*;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
@@ -25,7 +25,7 @@ public class MainWindowController implements Initializable{
     private JFXButton btnLogout = new JFXButton();
 
     @FXML
-    private TableView<ReviewMiddleware> treeView;
+    private TableView<AdminMiddleware> treeView;
 
     @FXML
     private JFXTextArea txtKomentar;
@@ -52,26 +52,26 @@ public class MainWindowController implements Initializable{
     private JFXButton btnDelete;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> tbNo;
+    private TableColumn<AdminMiddleware, String> tbNo;
 
     private String id;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> tbNamaPelanggan;
+    private TableColumn<AdminMiddleware, String> tbNamaPelanggan;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> tbMenu;
+    private TableColumn<AdminMiddleware, String> tbMenu;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> tbKomentar;
+    private TableColumn<AdminMiddleware, String> tbKomentar;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> colAction;
+    private TableColumn<AdminMiddleware, String> colAction;
 
     @FXML
     private Label usrLabel = new Label();
 
-    private ReviewModel reviewModel = new ReviewModel();
+    private AdminModel adminModel = new AdminModel();
     private int statusKode;
     private ObservableList listData;
 
@@ -86,10 +86,10 @@ public class MainWindowController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tbNo.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().idProperty());
-        tbNamaPelanggan.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().nameProperty());
-        tbMenu.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().menuProperty());
-        tbKomentar.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().commentProperty());
+        tbNo.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().idProperty());
+        tbNamaPelanggan.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().usernameProperty());
+        tbMenu.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().passwordProperty());
+        tbKomentar.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().commentProperty());
         listData = FXCollections.observableArrayList();
         statusKode = 0;
         showData();
@@ -109,23 +109,23 @@ public class MainWindowController implements Initializable{
     }
 
     private void showData(){
-        listData = reviewModel.getAll();
+        listData = adminModel.getAll();
         treeView.setItems(listData);
     }
 
     @FXML
     private void saveAction(ActionEvent event){
-        ReviewMiddleware reviewMiddleware = new ReviewMiddleware();
-        reviewMiddleware.setName(txtName.getText());
-        reviewMiddleware.setMenu(txtMakanan.getText());
-        reviewMiddleware.setComment(txtKomentar.getText());
-        reviewMiddleware.setId(id);
+        AdminMiddleware adminMiddleware = new AdminMiddleware();
+        adminMiddleware.setUsername(txtName.getText());
+        adminMiddleware.setPassword(txtMakanan.getText());
+        adminMiddleware.setComment(txtKomentar.getText());
+        adminMiddleware.setId(id);
 
         try{
             if(statusKode == 0)
-                reviewModel.insert(reviewMiddleware);
+                adminModel.insert(adminMiddleware);
             else
-                reviewModel.update(reviewMiddleware);
+                adminModel.update(adminMiddleware);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -141,10 +141,10 @@ public class MainWindowController implements Initializable{
 
     @FXML
     private void deleteAction(ActionEvent event){
-        ReviewMiddleware reviewMiddleware = new ReviewMiddleware();
-        reviewMiddleware.setId(id);
+        AdminMiddleware adminMiddleware = new AdminMiddleware();
+        adminMiddleware.setId(id);
         try{
-            reviewModel.delete(reviewMiddleware);
+            adminModel.delete(adminMiddleware);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -157,10 +157,10 @@ public class MainWindowController implements Initializable{
     private void onClickTable(MouseEvent event){
         statusKode = 1;
         try{
-            ReviewMiddleware click = treeView.getSelectionModel().getSelectedItems().get(0);
+            AdminMiddleware click = treeView.getSelectionModel().getSelectedItems().get(0);
             id = click.getId();
-            txtName.setText(click.getName());
-            txtMakanan.setText(click.getMenu());
+            txtName.setText(click.getUsername());
+            txtMakanan.setText(click.getPassword());
             txtKomentar.setText(click.getComment());
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -169,7 +169,7 @@ public class MainWindowController implements Initializable{
 
     @FXML
     private void searchAction(KeyEvent event){
-        listData = reviewModel.getByName(txtSearch.getText());
+        listData = adminModel.getByName(txtSearch.getText());
         treeView.setItems(listData);
     }
 

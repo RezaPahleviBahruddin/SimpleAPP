@@ -17,7 +17,7 @@
       <JFXButton buttonType="RAISED" layoutX="340.0" layoutY="259.0" onAction="#login" prefHeight="26.0" prefWidth="61.0" ripplerFill="WHITE" text="Login" textFill="WHITE" />
       <Label layoutX="246.0" layoutY="48.0" text="Food Com APP" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Cantarell Bold" size="24.0" />
+            <Font id_user="Cantarell Bold" size="24.0" />
          </font>
       </Label>
       <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="224.0" layoutY="177.0" size="15" wrappingWidth="85.4285717010498" />

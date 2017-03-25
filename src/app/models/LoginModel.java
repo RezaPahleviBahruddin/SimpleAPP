@@ -24,76 +24,12 @@ public class LoginModel {
         }
     }
 
-    private boolean loginUser(String username, String password) throws SQLException{
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String query = "SELECT * FROM Employee WHERE username = ? AND password = ?";
-        try {
-            preparedStatement  = connection.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
-                return true;
-            else
-                return false;
-        }catch (Exception e){
-            return false;
-        }finally {
-            preparedStatement.close();
-            resultSet.close();
-        }
-    }
-
-    private boolean loginAdmin(String username, String password) throws SQLException{
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String query = "SELECT * FROM Admin WHERE username = ? AND password = ?";
-        try {
-            preparedStatement  = connection.prepareStatement(query);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
-                return true;
-            else
-                return false;
-        }catch (Exception e){
-            return false;
-        }finally {
-            preparedStatement.close();
-            resultSet.close();
-        }
-    }
-
     public String isLogin(String username, String password) throws SQLException{
-        if (loginUser(username, password))
+        if (new UserModel().loginUser(username, password))
             return "user";
-        else if(loginAdmin(username, password))
+        else if(new AdminModel().loginAdmin(username, password))
             return "admin";
         else
-            return "index";
-
-    }
-
-    public boolean isFoundName(String name) throws SQLException{
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String query = "SELECT * FROM Employee WHERE name = ?";
-        try{
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, name);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next())
-                return true;
-            else
-                return false;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }finally {
-            preparedStatement.close();
-            resultSet.close();
-        }
+            return null;
     }
 }

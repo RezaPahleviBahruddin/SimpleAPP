@@ -1,7 +1,7 @@
 package app.controllers;
 
-import app.middleware.ReviewMiddleware;
-import app.models.ReviewModel;
+import app.middleware.AdminMiddleware;
+import app.models.AdminModel;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;
@@ -29,19 +29,19 @@ public class AdminControlller implements Initializable{
     private JFXTextField txtSearch;
 
     @FXML
-    private TableView<ReviewMiddleware> tableView;
+    private TableView<AdminMiddleware> tableView;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> colNo;
+    private TableColumn<AdminMiddleware, String> colNo;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> colNama;
+    private TableColumn<AdminMiddleware, String> colNama;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> colMenu;
+    private TableColumn<AdminMiddleware, String> colMenu;
 
     @FXML
-    private TableColumn<ReviewMiddleware, String> colKomentar;
+    private TableColumn<AdminMiddleware, String> colKomentar;
 
     private String id;
 
@@ -52,17 +52,17 @@ public class AdminControlller implements Initializable{
 
     @FXML
     private void searchAction(KeyEvent event) {
-        listData = reviewModel.getByName(txtSearch.getText());
+        listData = adminModel.getByName(txtSearch.getText());
         tableView.setItems(listData);
     }
 
     @FXML
     private void deleteAction(ActionEvent event){
-        ReviewMiddleware reviewMiddleware = new ReviewMiddleware();
-        reviewMiddleware.setId(id);
+        AdminMiddleware adminMiddleware = new AdminMiddleware();
+        adminMiddleware.setId(id);
 
         try{
-            reviewModel.delete(reviewMiddleware);
+            adminModel.delete(adminMiddleware);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -71,7 +71,7 @@ public class AdminControlller implements Initializable{
         showData();
     }
 
-    private ReviewModel reviewModel = new ReviewModel();
+    private AdminModel adminModel = new AdminModel();
     private ObservableList listData;
 
     @FXML
@@ -82,10 +82,10 @@ public class AdminControlller implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colNo.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().idProperty());
-        colNama.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().nameProperty());
-        colMenu.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().menuProperty());
-        colKomentar.setCellValueFactory((TableColumn.CellDataFeatures<ReviewMiddleware, String> cellData) -> cellData.getValue().commentProperty());
+        colNo.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().idProperty());
+        colNama.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().usernameProperty());
+        colMenu.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().passwordProperty());
+        colKomentar.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().commentProperty());
 
         listData = FXCollections.observableArrayList();
         showData();
@@ -94,14 +94,14 @@ public class AdminControlller implements Initializable{
     }
 
     private void showData(){
-        listData = reviewModel.getAll();
+        listData = adminModel.getAll();
         tableView.setItems(listData);
     }
 
     @FXML
     private void onClickTable(MouseEvent event){
         try{
-            ReviewMiddleware click = tableView.getSelectionModel().getSelectedItems().get(0);
+            AdminMiddleware click = tableView.getSelectionModel().getSelectedItems().get(0);
             id = click.getId();
         }catch (Exception e){
             System.out.println(e.getMessage());

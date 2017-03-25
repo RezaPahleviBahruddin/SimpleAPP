@@ -3,12 +3,11 @@ package app.middleware;
 import javafx.beans.property.*;
 
 /**
- * Created by r32427 on 14/03/17.
+ * Created by r32427 on 24/03/17.
  */
-public class ReviewMiddleware {
-
+public class CommentsMiddleware {
     private final StringProperty id = new SimpleStringProperty();
-    private final StringProperty name = new SimpleStringProperty();
+    private final StringProperty id_user = new SimpleStringProperty();
     private final StringProperty menu = new SimpleStringProperty();
     private final StringProperty comment = new SimpleStringProperty();
 
@@ -24,8 +23,8 @@ public class ReviewMiddleware {
         this.menu.set(menu);
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public void setId_user(String id_user) {
+        this.id_user.set(id_user);
     }
 
     public String getId() {
@@ -40,8 +39,8 @@ public class ReviewMiddleware {
         return menu.get();
     }
 
-    public String getName() {
-        return name.get();
+    public String getId_user() {
+        return id_user.get();
     }
 
     public StringProperty idProperty() {
@@ -56,7 +55,7 @@ public class ReviewMiddleware {
         return menu;
     }
 
-    public StringProperty nameProperty() {
-        return name;
+    public StringProperty id_userProperty() {
+        return id_user;
     }
 }

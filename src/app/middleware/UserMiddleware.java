@@ -1,16 +1,28 @@
 package app.middleware;
 
-import java.time.LocalDate;
 import javafx.beans.property.*;
 
-public class EmployeeMiddleware{
+public class UserMiddleware {
     private final StringProperty id = new SimpleStringProperty();
     private final StringProperty name = new SimpleStringProperty();
-    private final ObjectProperty bornDate = new SimpleObjectProperty<>();
+    private final StringProperty address = new SimpleStringProperty();
+    private final StringProperty phone = new SimpleStringProperty();
     private final StringProperty username = new SimpleStringProperty();
     private final StringProperty password = new SimpleStringProperty();
 
-    public EmployeeMiddleware() {
+    public UserMiddleware() {
+    }
+
+    public void setPhone(String phone) {
+        this.phone.set(phone);
+    }
+
+    public String getPhone() {
+        return phone.get();
+    }
+
+    public StringProperty phoneProperty() {
+        return phone;
     }
 
     public void setId(String id) {
@@ -25,8 +37,8 @@ public class EmployeeMiddleware{
         return password.get();
     }
 
-    public void setBornDate(Object bornDate) {
-        this.bornDate.set(bornDate);
+    public void setAddress(String address) {
+        this.address.set(address);
     }
 
     public void setPassword(String password) {
@@ -57,16 +69,12 @@ public class EmployeeMiddleware{
         return username;
     }
 
-    public LocalDate getBornDate() {
-        return (LocalDate) bornDate.get();
+    public String getAddress() {
+        return address.get();
     }
 
-    public void setBornDate(LocalDate value) {
-        bornDate.set(value);
-    }
-
-    public ObjectProperty bornDateProperty() {
-        return bornDate;
+    public StringProperty addressProperty() {
+        return address;
     }
 
 }

@@ -16,7 +16,7 @@
       <Rectangle fill="#6f6f6f" height="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1000.0" />
       <Label layoutX="28.0" layoutY="31.0" text="Review Data" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="31.0" />
+            <Font id_user="System Bold" size="31.0" />
          </font>
       </Label>
       <Line endX="100.0" layoutX="137.0" layoutY="71.0" startX="-100.0" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="2.0" />
