@@ -19,7 +19,8 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        new CreateSchema().up();
+        /*Uncomment this line to creating database schema*/
+//        new CreateSchema().up();
         launch(args);
     }
 }

@@ -12,16 +12,24 @@ public class CreateSchema {
 
     public void up(){
         String res = "";
-
         try{
-            res = (isCreateAdminTable() && isCreateCommentsTable()
-                    && isCreateUserTable() && insertAdmin("reza", "@reza27#"))
-                    ? "success" : "failed";
+            if(isCreateAdminTable())
+                res += "Admin, ";
+            if(isCreateCommentsTable())
+                res += " Comment,";
+            if(isCreateUserTable())
+                res += " User, ";
+            if (insertAdmin("reza", "@reza27#"))
+                res += " success" ;
+            else
+                res += " failed";
+
+            res += " to be created";
         }catch (Exception e){
             out.println(e.getMessage());
         }
 
-        out.println("Database schema is "+res+" to be created !");
+        out.println(res);
     }
 
     private boolean isCreateAdminTable() throws SQLException{
@@ -32,8 +40,8 @@ public class CreateSchema {
             String query = "CREATE TABLE `Admin` ( " +
                     "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "`username` TEXT, " +
-                    "`password` TEXT " +
-                    "`created_at` TEXT"+
+                    "`password` TEXT, " +
+                    "`created_at` TEXT,"+
                     "`updated_at` TEXT"+
                 ")";
 
@@ -63,7 +71,7 @@ public class CreateSchema {
                     "`phone` TEXT, " +
                     "`username` TEXT, " +
                     "`password` TEXT, " +
-                    "`created_at` TEXT " +
+                    "`created_at` TEXT, " +
                     "`updated_at` TEXT"+
                 ")";
 
@@ -90,8 +98,8 @@ public class CreateSchema {
                     "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                     "`id_user` INTEGER NOT NULL, " +
                     "`menu` TEXT, " +
-                    "`comments` TEXT " +
-                    "`created_at` TEXT"+
+                    "`comments` TEXT, " +
+                    "`created_at` TEXT,"+
                     "`updated_at` TEXT"+
                 ")";
 
@@ -126,7 +134,7 @@ public class CreateSchema {
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, new Timestamp(System.currentTimeMillis()).toString());
 
-            if (preparedStatement.execute())
+            if (!preparedStatement.execute())
                 return true;
             else
                 return false;

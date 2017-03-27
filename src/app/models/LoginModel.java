@@ -30,6 +30,6 @@ public class LoginModel {
         else if(new AdminModel().loginAdmin(username, password))
             return "admin";
         else
-            return null;
+            return "";
     }
 }
