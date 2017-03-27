@@ -89,7 +89,7 @@ public class MainWindowController implements Initializable{
         tbNo.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().idProperty());
         tbNamaPelanggan.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().usernameProperty());
         tbMenu.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().passwordProperty());
-        tbKomentar.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().commentProperty());
+        tbKomentar.setCellValueFactory((TableColumn.CellDataFeatures<AdminMiddleware, String> cellData) -> cellData.getValue().passwordProperty());
         listData = FXCollections.observableArrayList();
         statusKode = 0;
         showData();
@@ -118,7 +118,7 @@ public class MainWindowController implements Initializable{
         AdminMiddleware adminMiddleware = new AdminMiddleware();
         adminMiddleware.setUsername(txtName.getText());
         adminMiddleware.setPassword(txtMakanan.getText());
-        adminMiddleware.setComment(txtKomentar.getText());
+        adminMiddleware.setUsername(txtKomentar.getText());
         adminMiddleware.setId(id);
 
         try{
@@ -161,7 +161,7 @@ public class MainWindowController implements Initializable{
             id = click.getId();
             txtName.setText(click.getUsername());
             txtMakanan.setText(click.getPassword());
-            txtKomentar.setText(click.getComment());
+            txtKomentar.setText(click.getUsername());
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

@@ -10,14 +10,14 @@ import static java.lang.System.out;
 public class CreateSchema {
     private Connection conn;
 
-    private void up(){
+    public void up(){
         String res = "";
 
         try{
             res = (isCreateAdminTable() && isCreateCommentsTable()
                     && isCreateUserTable() && insertAdmin("reza", "@reza27#"))
                     ? "success" : "failed";
-        }catch (SQLException e){
+        }catch (Exception e){
             out.println(e.getMessage());
         }
 
