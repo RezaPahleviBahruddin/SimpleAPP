@@ -15,11 +15,11 @@ public class CreateSchema {
         try{
             if(isCreateAdminTable())
                 res += "Admin, ";
-            if(isCreateCommentsTable())
+            else if(isCreateCommentsTable())
                 res += " Comment,";
-            if(isCreateUserTable())
+            else if(isCreateUserTable())
                 res += " User, ";
-            if (insertAdmin("reza", "@reza27#"))
+            else if (insertAdmin("reza", "$2a$08$ZOhiuOY2fU2qeduMTHlq6OqpodZNqZfPBiJ3a7eMsMAJxveusEC3q"))
                 res += " success" ;
             else
                 res += " failed";

@@ -1,5 +1,6 @@
 package app.models;
 
+import app.helper.BCrypt;
 import app.connection.SqliteConnection;
 import app.middleware.UserMiddleware;
 import javafx.collections.*;
@@ -17,13 +18,12 @@ public class UserModel{
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         String query = "SELECT * FROM User " +
-                "WHERE username = ? AND password = ? LIMIT 1";
+                "WHERE username = ? LIMIT 1";
         try {
             preparedStatement  = conn.prepareStatement(query);
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
+            if(resultSet.next() && BCrypt.checkpw(password, resultSet.getString(6)))
                 return true;
             else
                 return false;
@@ -35,14 +35,15 @@ public class UserModel{
         }
     }
 
-    public boolean isFoundName(String name) throws SQLException{
+    public boolean isFoundName(String name, String username) throws SQLException{
         conn = SqliteConnection.connector();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String query = "SELECT * FROM User WHERE name = ?";
+        String query = "SELECT * FROM User WHERE name = ? OR username = ?";
         try{
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, name);
+            preparedStatement.setString(2, username);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
                 return true;
@@ -77,7 +78,7 @@ public class UserModel{
             preparedStatement.setString(2, u.getAddress());
             preparedStatement.setString(3, u.getPhone());
             preparedStatement.setString(4, u.getUsername());
-            preparedStatement.setString(5, u.getPassword());
+            preparedStatement.setString(5, BCrypt.hashpw(u.getPassword(), BCrypt.gensalt(8)));
             preparedStatement.setString(6, new Timestamp(System.currentTimeMillis()).toString());
 
             preparedStatement.execute();

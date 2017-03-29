@@ -7,7 +7,7 @@ import javafx.beans.property.*;
  */
 public class CommentsMiddleware {
     private final StringProperty id = new SimpleStringProperty();
-    private final StringProperty id_user = new SimpleStringProperty();
+    private final StringProperty nama = new SimpleStringProperty();
     private final StringProperty menu = new SimpleStringProperty();
     private final StringProperty comment = new SimpleStringProperty();
 
@@ -23,8 +23,8 @@ public class CommentsMiddleware {
         this.menu.set(menu);
     }
 
-    public void setId_user(String id_user) {
-        this.id_user.set(id_user);
+    public void setNama(String nama) {
+        this.nama.set(nama);
     }
 
     public String getId() {
@@ -39,8 +39,8 @@ public class CommentsMiddleware {
         return menu.get();
     }
 
-    public String getId_user() {
-        return id_user.get();
+    public String getNama() {
+        return nama.get();
     }
 
     public StringProperty idProperty() {
@@ -55,7 +55,7 @@ public class CommentsMiddleware {
         return menu;
     }
 
-    public StringProperty id_userProperty() {
-        return id_user;
+    public StringProperty namaProperty() {
+        return nama;
     }
 }

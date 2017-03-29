@@ -1,5 +1,6 @@
 package app.models;
 
+import app.helper.BCrypt;
 import app.connection.SqliteConnection;
 import app.middleware.AdminMiddleware;
 import javafx.collections.*;
@@ -9,7 +10,7 @@ import java.sql.*;
  * Created by r32427 on 14/03/17.
  */
 public class AdminModel {
-    Connection conn;
+    private Connection conn;
 
     public boolean loginAdmin(String username, String password) throws SQLException{
         conn = SqliteConnection.connector();
@@ -17,15 +18,14 @@ public class AdminModel {
         ResultSet resultSet = null;
         String query = "SELECT * FROM Admin " +
             "WHERE " +
-                "username = ? AND password = ? LIMIT 1";
+                "username = ? LIMIT 1";
         try {
             preparedStatement  = conn.prepareStatement(query);
 
             preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next())
+            if(resultSet.next() && BCrypt.checkpw(password, resultSet.getString(3)))
                 return true;
             else
                 return false;
@@ -109,7 +109,7 @@ public class AdminModel {
         }
     }
 
-    public ObservableList getAll() {
+    public ObservableList<AdminMiddleware> getAll() {
         conn = SqliteConnection.connector();
         ObservableList observableList = FXCollections.observableArrayList();
         try{
@@ -132,7 +132,7 @@ public class AdminModel {
         return observableList;
     }
 
-    public ObservableList getByName(String name) {
+    public ObservableList <AdminMiddleware>getByName(String name) {
 
         conn = SqliteConnection.connector();
         ObservableList observableList = FXCollections.observableArrayList();
