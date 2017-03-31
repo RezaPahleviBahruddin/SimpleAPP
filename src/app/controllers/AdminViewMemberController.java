@@ -3,60 +3,47 @@ package app.controllers;
 import app.helper.Sessions;
 import app.helper.Transition;
 import app.middleware.CommentsMiddleware;
-import app.models.CommentsModel;
-import com.jfoenix.controls.JFXTabPane;
+import app.middleware.UserMiddleware;
+import app.models.UserModel;
 import com.jfoenix.controls.*;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.util.Callback;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
- * Created by r32427 on 28/03/17.
+ * Created by r32427 on 31/03/17.
  */
-public class AdminCommentsController implements Initializable{
-
+public class AdminViewMemberController implements Initializable {
     @FXML
     private AnchorPane comment_anchorpane;
 
     @FXML
-    private TableView<CommentsMiddleware> tableView;
+    private TableView<UserMiddleware> tableView;
 
     @FXML
-    private TableColumn<CommentsMiddleware, String> colNo;
+    private TableColumn<UserMiddleware, String> colNo;
 
     @FXML
-    private TableColumn<CommentsMiddleware, String> colNama;
+    private TableColumn<UserMiddleware, String> colNama;
 
     @FXML
-    private TableColumn<CommentsMiddleware, String> colKomentar;
-
-    @FXML
-    private TableColumn<CommentsMiddleware, String> colMenu;
+    private TableColumn<UserMiddleware, String> colAlamat;
 
     @FXML
     private TableColumn colAction;
-
-    @FXML
-    private JFXButton btnComments;
-
-    @FXML
-    private JFXButton btnAdmin;
 
     @FXML
     private JFXTextField txtSearch;
@@ -65,56 +52,70 @@ public class AdminCommentsController implements Initializable{
     private JFXButton btnLogout;
 
     @FXML
-    private JFXButton btnMember;
-
-    @FXML
     private Label labelAdmin;
 
-    private String id;
+    @FXML
+    private JFXButton btnComments;
 
-    private ObservableList<CommentsMiddleware> data;
+    @FXML
+    private JFXButton btnAdmin;
 
-    private Transition transition = new Transition();
-
-    private CommentsModel commentsModel = new CommentsModel();
+    @FXML
+    private JFXButton btnMember;
 
     private Sessions sessions = new Sessions();
 
+    private Transition transition = new Transition();
+
     private final String sessionName = "login_admin";
 
-    @FXML
-    void searchAction(KeyEvent event){
-        if (event.getSource().equals(txtSearch)){
-            data = commentsModel.getByName(txtSearch.getText());
-            tableView.setItems(data);
-        }
+    private UserModel userModel = new UserModel();
+
+    private ObservableList<UserMiddleware> data;
+
+    private String id = "";
+
+    private void showData(){
+        data = userModel.getAll();
+        tableView.setItems(data);
     }
 
     @FXML
-    void clickAdmin(MouseEvent event) throws IOException{
-        if (event.getSource().equals(labelAdmin))
-            transition.switchScene(btnLogout, "Admin Management", "admin_manage");
+    void clickAdmin(MouseEvent event) {
+        UserMiddleware click = tableView.getSelectionModel().getSelectedItems().get(0);
+        id = click.getId();
     }
 
     @FXML
     void handleButtonAction(ActionEvent event) throws IOException{
-        if(event.getSource().equals(btnLogout)){
-            sessions.deleteSessions(sessionName);
-            transition.switchScene(btnLogout, "Login Page", "login");
-        }else if(event.getSource().equals(btnAdmin))
+        if(event.getSource().equals(btnAdmin))
             transition.switchScene(btnAdmin, "Admin - Admin Management", "admin_manage");
         else if(event.getSource().equals(btnComments))
             transition.switchScene(btnComments, "Admin - User Comments", "admin_comment");
         else if(event.getSource().equals(btnMember))
             transition.switchScene(btnMember, "Admin - Member Lists", "admin_member");
+        else if(event.getSource().equals(btnLogout)) {
+            sessions.deleteSessions(sessionName);
+            transition.switchScene(btnLogout, "Login Page", "login");
+        }
+    }
+
+    @FXML
+    void searchAction(KeyEvent event) {
+        if (event.getSource().equals(txtSearch)){
+            data = userModel.getByName(txtSearch.getText());
+            tableView.setItems(data);
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colNo.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().idProperty());
-        colNama.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().namaProperty());
-        colMenu.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().menuProperty());
-        colKomentar.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().commentProperty());
+        if(sessions.isFoundSessions(sessionName))
+            labelAdmin.setText(sessions.readSessions(sessionName));
+
+        colNo.setCellValueFactory((TableColumn.CellDataFeatures<UserMiddleware, String> cellData) -> cellData.getValue().idProperty());
+        colNama.setCellValueFactory((TableColumn.CellDataFeatures<UserMiddleware, String> cellData) -> cellData.getValue().nameProperty());
+        colAlamat.setCellValueFactory((TableColumn.CellDataFeatures<UserMiddleware, String> cellData) -> cellData.getValue().addressProperty());
         colAction.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Object, Boolean>,
                 ObservableValue<Boolean>>() {
             @Override
@@ -126,26 +127,11 @@ public class AdminCommentsController implements Initializable{
         colAction.setCellFactory(new Callback<TableColumn<Object, Boolean>, TableCell<Object, Boolean>>() {
             @Override
             public TableCell<Object, Boolean> call(TableColumn<Object, Boolean> p) {
-                return new ButtonCell(tableView);
+                return new AdminViewMemberController.ButtonCell(tableView);
             }
         });
         data = FXCollections.observableArrayList();
-        tableView.getSelectionModel().clearSelection();
         showData();
-
-        if(sessions.isFoundSessions(sessionName))
-            labelAdmin.setText(sessions.readSessions(sessionName));
-    }
-
-    @FXML
-    private void onClickTable(MouseEvent event){
-        CommentsMiddleware click = tableView.getSelectionModel().getSelectedItems().get(0);
-        id = click.getId();
-    }
-
-    private void showData(){
-        data = commentsModel.getAll();
-        tableView.setItems(data);
     }
 
     private class ButtonCell extends TableCell<Object, Boolean> {
@@ -159,15 +145,15 @@ public class AdminCommentsController implements Initializable{
             cellButtonDelete.setOnAction((ActionEvent t) -> {
                 int row = getTableRow().getIndex();
                 tableView.getSelectionModel().select(row);
-                CommentsMiddleware del = new CommentsMiddleware();
-                onClickTable(null);
+                UserMiddleware del = new UserMiddleware();
+                clickAdmin(null);
                 del.setId(id);
                 try{
-                    commentsModel.delete(del);
+                    userModel.delete(del);
                 }catch (SQLException e){
                     System.out.println(e.getMessage());
                 }finally {
-                    transition.showNotif(Alert.AlertType.INFORMATION, "Komentar berhasil dihapus !");
+                    transition.showNotif(Alert.AlertType.INFORMATION, "Member berhasil dihapus !");
                     id = "";
                     showData();
                 }
@@ -184,4 +170,6 @@ public class AdminCommentsController implements Initializable{
             }
         }
     }
+
+
 }

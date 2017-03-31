@@ -23,6 +23,7 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -65,6 +66,9 @@ public class AdminManageControlller implements Initializable{
     @FXML
     private JFXButton btnAdd;
 
+    @FXML
+    private JFXButton btnMember;
+
     private Transition transition = new Transition();
 
     private Sessions sessions = new Sessions();
@@ -75,10 +79,12 @@ public class AdminManageControlller implements Initializable{
 
     private AdminModel adminModel = new AdminModel();
 
+    private String tempData;
+
     @FXML
     void clickAdmin(MouseEvent event) {
         AdminMiddleware click = tableView.getSelectionModel().getSelectedItems().get(0);
-        sessions.writeSessions("crud", click.getId()+":"+click.getUsername()+":"+click.getPassword());
+        tempData = click.getId()+","+click.getUsername()+","+click.getPassword();
     }
 
     @FXML
@@ -90,13 +96,19 @@ public class AdminManageControlller implements Initializable{
         else if(event.getSource().equals(btnLogout)){
             sessions.deleteSessions(sessionName);
             transition.switchScene(btnLogout, "Login Page", "login");
-        }else if(event.getSource().equals(btnAdd))
-            System.out.println("button add admin has been clicked !");
+        }else if(event.getSource().equals(btnAdd)){
+            transition.showModals(btnAdd, "Input Admin", "modal_admin");
+            showData();
+        }else if(event.getSource().equals(btnMember))
+            transition.switchScene(btnMember, "Admin - Member Lists", "admin_member");
     }
 
     @FXML
     void searchAction(KeyEvent event) {
-
+        if(event.getSource().equals(txtSearch)){
+            data = adminModel.getByName(txtSearch.getText());
+            tableView.setItems(data);
+        }
     }
 
     private void showData(){
@@ -130,7 +142,7 @@ public class AdminManageControlller implements Initializable{
         data = FXCollections.observableArrayList();
         tableView.getSelectionModel().clearSelection();
         showData();
-
+        tempData = "";
     }
 
     private class ButtonCell extends TableCell<Object, Boolean> {
@@ -147,7 +159,17 @@ public class AdminManageControlller implements Initializable{
             cellButtonDelete.setOnAction((ActionEvent t) -> {
                 int row = getTableRow().getIndex();
                 tableView.getSelectionModel().select(row);
-                System.out.println("Delete action has been clicked !");
+                clickAdmin(null);
+                try{
+                    AdminMiddleware adminMiddleware = new AdminMiddleware();
+                    adminMiddleware.setId(tempData.split(",")[0]);
+                    adminModel.delete(adminMiddleware);
+                }catch (SQLException e){
+                    System.out.println(e.getMessage());
+                }finally {
+                    transition.showNotif(Alert.AlertType.INFORMATION, "Admin has been success deleted !");
+                    showData();
+                }
             });
 
             // edit cell
@@ -156,7 +178,15 @@ public class AdminManageControlller implements Initializable{
             cellButtonEdit.setOnAction((ActionEvent t) -> {
                 int row = getTableRow().getIndex();
                 tableView.getSelectionModel().select(row);
-                System.out.println("Edit action has been clicked !");
+                clickAdmin(null);
+                sessions.writeSessions("crud_admin", tempData);
+                try{
+                    transition.showModals(btnAdmin, "Update admin", "modal_admin");
+                }catch (IOException e){
+                    System.out.println(e.getMessage());
+                }finally {
+                    showData();
+                }
             });
         }
 

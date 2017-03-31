@@ -15,11 +15,11 @@ public class CreateSchema {
         try{
             if(isCreateAdminTable())
                 res += "Admin, ";
-            else if(isCreateCommentsTable())
+            if(isCreateCommentsTable())
                 res += " Comment,";
-            else if(isCreateUserTable())
+            if(isCreateUserTable())
                 res += " User, ";
-            else if (insertAdmin("reza", "$2a$08$ZOhiuOY2fU2qeduMTHlq6OqpodZNqZfPBiJ3a7eMsMAJxveusEC3q"))
+            if (insertAdmin("reza", "$2a$08$ZOhiuOY2fU2qeduMTHlq6OqpodZNqZfPBiJ3a7eMsMAJxveusEC3q"))
                 res += " success" ;
             else
                 res += " failed";
@@ -39,7 +39,7 @@ public class CreateSchema {
         try{
             String query = "CREATE TABLE `Admin` ( " +
                     "`id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "`username` TEXT, " +
+                    "`username` TEXT UNIQUE, " +
                     "`password` TEXT, " +
                     "`created_at` TEXT,"+
                     "`updated_at` TEXT"+
@@ -69,7 +69,7 @@ public class CreateSchema {
                     "`name` TEXT, " +
                     "`address` TEXT, " +
                     "`phone` TEXT, " +
-                    "`username` TEXT, " +
+                    "`username` TEXT UNIQUE, " +
                     "`password` TEXT, " +
                     "`created_at` TEXT, " +
                     "`updated_at` TEXT"+

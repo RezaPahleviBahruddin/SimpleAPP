@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -42,8 +43,9 @@ public class Transition {
         Parent root = null;
         Stage stage = null;
 
-        stage = (Stage) btn.getScene().getWindow();;
+        stage = (Stage) btn.getScene().getWindow();
         stage.setTitle(title);
+        stage.centerOnScreen();
         root = FXMLLoader.load(getClass().getResource("../views/"+filename+".fxml"));
 
         if(root != null && stage != null){
@@ -59,5 +61,18 @@ public class Transition {
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("Informasi");
         alert.showAndWait();
+    }
+
+    public void showModals(Button btn, String title, String filename) throws IOException{
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("../views/"+filename+".fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle(title);
+        stage.setResizable(false);
+        stage.centerOnScreen();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(btn.getScene().getWindow());
+        stage.showAndWait();
+
     }
 }

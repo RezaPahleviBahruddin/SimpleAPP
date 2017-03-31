@@ -50,9 +50,10 @@
             <DropShadow />
          </effect>
       </MaterialDesignIconView>
-      <JFXButton fx:id="btnComments" buttonType="RAISED" defaultButton="true" layoutX="317.0" layoutY="21.0" onAction="#handleButtonAction" style="-fx-background-color: teal;" text="Comments" textFill="WHITE" />
-      <JFXButton fx:id="btnAdmin" buttonType="RAISED" defaultButton="true" layoutX="413.0" layoutY="21.0" onAction="#handleButtonAction" style="-fx-background-color: white;" text="Admin" textFill="teal" />
+      <JFXButton fx:id="btnComments" buttonType="RAISED" defaultButton="true" layoutX="283.0" layoutY="22.0" onAction="#handleButtonAction" style="-fx-background-color: teal;" text="Comments" textFill="WHITE" />
+      <JFXButton fx:id="btnAdmin" buttonType="RAISED" defaultButton="true" layoutX="379.0" layoutY="22.0" onAction="#handleButtonAction" style="-fx-background-color: white;" text="Admin" textFill="teal" />
       <JFXButton fx:id="btnAdd" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="CENTER" defaultButton="true" layoutX="29.0" layoutY="134.0" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: teal;" text="Add" textAlignment="JUSTIFY" textFill="WHITE" />
+      <JFXButton fx:id="btnMember" buttonType="RAISED" defaultButton="true" layoutX="445.0" layoutY="22.0" onAction="#handleButtonAction" style="-fx-background-color: teal;" text="Member" textFill="WHITE" />
       <MaterialDesignIconView fill="WHITE" glyphName="PLUS" layoutX="33.0" layoutY="154.0" size="20" />
    </children>
 </AnchorPane>

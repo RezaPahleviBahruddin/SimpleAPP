@@ -77,4 +77,8 @@ public class UserMiddleware {
         return address;
     }
 
+    public StringProperty idProperty() {
+        return id;
+    }
+
 }

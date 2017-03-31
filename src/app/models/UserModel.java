@@ -5,7 +5,6 @@ import app.connection.SqliteConnection;
 import app.middleware.UserMiddleware;
 import javafx.collections.*;
 import java.sql.*;
-
 /**
  * Created by r32427 on 06/03/17.
  */

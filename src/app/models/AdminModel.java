@@ -50,7 +50,7 @@ public class AdminModel {
                     "(?,?,?)";
             preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, u.getUsername());
-            preparedStatement.setString(2, u.getPassword());
+            preparedStatement.setString(2, BCrypt.hashpw(u.getPassword(), BCrypt.gensalt(8)));
             preparedStatement.setString(3, new Timestamp(System.currentTimeMillis()).toString());
 
             preparedStatement.execute();
@@ -71,14 +71,14 @@ public class AdminModel {
             String query = "UPDATE Admin " +
                 "SET " +
                     "username=?, " +
-                    "password=? " +
+                    "password=?, " +
                     "updated_at=? " +
                 "WHERE " +
                     "id=?";
             preparedStatement = conn.prepareStatement(query);
 
             preparedStatement.setString(1, u.getUsername());
-            preparedStatement.setString(2, u.getPassword());
+            preparedStatement.setString(2, BCrypt.hashpw(u.getPassword(), BCrypt.gensalt(8)));
             preparedStatement.setString(3, new Timestamp(System.currentTimeMillis()).toString());
             preparedStatement.setInt(4, Integer.parseInt(u.getId()));
 
