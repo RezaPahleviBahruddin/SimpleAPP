@@ -19,7 +19,7 @@ public class Main extends Application {
             root = FXMLLoader.load(getClass().getResource("views/admin_comment.fxml"));
             primaryStage.setTitle("Admin - User Comments");
         }else if(sessions.isFoundSessions("login_user")){
-            root = FXMLLoader.load(getClass().getResource("views/user_comment.fxml"));
+            root = FXMLLoader.load(getClass().getResource("views/user_comments.fxml"));
             primaryStage.setTitle("User - User Comments");
         }
 

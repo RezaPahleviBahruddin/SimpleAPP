@@ -39,19 +39,19 @@ public class LoginController implements Initializable{
     void handleButtonAction(ActionEvent event) throws IOException {
         if (event.getSource().equals(btnLogin)){
             try{
-                if (loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("user"))
-                    System.out.println("Login user: "+txtUsername.getText());
-                else if(loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("admin")){
+                if (loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("user")){
+                    sessions.writeSessions("login_user", txtUsername.getText());
+                    transition.switchScene(btnLogin, "Member - All Comments", "user_comments");
+                }else if(loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("admin")){
                     sessions.writeSessions("login_admin", txtUsername.getText());
                     transition.switchScene(btnLogin, "Admin - Customer Comments", "admin_comment");
-                }
-                else
+                }else
                     showToast(loginContainer, "Login failed, check username & password !", 2000);
 
                 clearText();
 
             }catch(SQLException e){
-
+                System.out.println(e.getMessage());
             }
 
         }else if(event.getSource().equals(btnRegister))
@@ -73,6 +73,5 @@ public class LoginController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 }

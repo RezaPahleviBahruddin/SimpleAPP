@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.helper.Sessions;
 import app.helper.Transition;
-import app.middleware.CommentsMiddleware;
 import app.middleware.UserMiddleware;
 import app.models.UserModel;
 import com.jfoenix.controls.*;
