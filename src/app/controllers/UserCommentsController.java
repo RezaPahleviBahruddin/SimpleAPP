@@ -1,25 +1,18 @@
 package app.controllers;
 
-import app.helper.Sessions;
-import app.helper.Transition;
+import app.helper.*;
 import app.middleware.CommentsMiddleware;
 import app.models.CommentsModel;
 import com.jfoenix.controls.*;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.*;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -64,6 +57,8 @@ public class UserCommentsController implements Initializable {
 
     private final String sessionName = "login_user";
 
+    private String arrayTemp[] = new String[3];
+
     private ObservableList<CommentsMiddleware> data;
 
     private String id;
@@ -99,11 +94,15 @@ public class UserCommentsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         id = "";
-        if(sessions.isFoundSessions(sessionName))
-            labelAdmin.setText(sessions.readSessions(sessionName));
+        if(sessions.isFoundSessions(sessionName)){
+            arrayTemp = sessions.readSessions(sessionName).split(",");
+            labelAdmin.setText(arrayTemp[1]);
+        }
+
+        System.out.println("id: "+ arrayTemp[0]+" username: "+arrayTemp[1]);
 
         colNo.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().idProperty());
-        colNama.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().namaProperty());
+        colNama.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().id_userProperty());
         colMenu.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().menuProperty());
         colKomentar.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().commentProperty());
 

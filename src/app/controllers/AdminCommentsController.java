@@ -4,7 +4,6 @@ import app.helper.Sessions;
 import app.helper.Transition;
 import app.middleware.CommentsMiddleware;
 import app.models.CommentsModel;
-import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.*;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -17,8 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -112,7 +109,7 @@ public class AdminCommentsController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colNo.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().idProperty());
-        colNama.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().namaProperty());
+        colNama.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().id_userProperty());
         colMenu.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().menuProperty());
         colKomentar.setCellValueFactory((TableColumn.CellDataFeatures<CommentsMiddleware, String> cellData) -> cellData.getValue().commentProperty());
         colAction.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Object, Boolean>,

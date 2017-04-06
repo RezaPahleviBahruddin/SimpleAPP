@@ -2,6 +2,7 @@ package app.models;
 
 import app.helper.BCrypt;
 import app.connection.SqliteConnection;
+import app.helper.Sessions;
 import app.middleware.UserMiddleware;
 import javafx.collections.*;
 import java.sql.*;
@@ -10,6 +11,7 @@ import java.sql.*;
  */
 public class UserModel{
     private  Connection conn;
+    private Sessions sessions = new Sessions();
 
 
     public boolean loginUser(String username, String password) throws SQLException{
@@ -22,8 +24,10 @@ public class UserModel{
             preparedStatement  = conn.prepareStatement(query);
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
-            if(resultSet.next() && BCrypt.checkpw(password, resultSet.getString(6)))
+            if(resultSet.next() && BCrypt.checkpw(password, resultSet.getString(6))){
+                sessions.writeSessions("login_user", resultSet.getInt(1)+","+resultSet.getString(5));
                 return true;
+            }
             else
                 return false;
         }catch (Exception e){

@@ -40,7 +40,6 @@ public class LoginController implements Initializable{
         if (event.getSource().equals(btnLogin)){
             try{
                 if (loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("user")){
-                    sessions.writeSessions("login_user", txtUsername.getText());
                     transition.switchScene(btnLogin, "Member - All Comments", "user_comments");
                 }else if(loginModel.isLogin(txtUsername.getText(), txtPassword.getText()).equals("admin")){
                     sessions.writeSessions("login_admin", txtUsername.getText());

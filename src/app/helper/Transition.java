@@ -73,6 +73,5 @@ public class Transition {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(btn.getScene().getWindow());
         stage.showAndWait();
-
     }
 }
